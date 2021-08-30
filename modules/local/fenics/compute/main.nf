@@ -28,9 +28,12 @@ process FENICS_COMPUTE {
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
 
+    // module load will only work in environments with modules installed
+    // and where the same module is present --> NOT portable
+
     """
     module load mpich
 
-    mpirun -np $task.cpus python3 Mechanics.py
+    mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py
     """
 }
