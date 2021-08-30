@@ -15,7 +15,7 @@ if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input CSV fi
 
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
-include { READ_INPUT } FROM '../subworkflows/local/read_input.nf' addParams( options: [:] )
+include { READ_INPUT } from '../subworkflows/local/read_input.nf' addParams( options: [:] )
 
 /*
 ========================================================================================
