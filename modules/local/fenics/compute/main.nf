@@ -19,11 +19,11 @@ process FENICS_COMPUTE {
     }
 
     input:
-    tuple val(meta), path(bam)
+    tuple val(meta), val(inputs)
 
     output:
-    // TODO nf-core: Named file extensions MUST be emitted for ALL output channels
-    tuple val(meta), path("*.bam"), emit: bam
+    tuple val(meta), path("/images/*/*.h5"), emit: image
+    tuple val(meta), path("/images/*/*.xdmf"), emit: xml
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -34,6 +34,6 @@ process FENICS_COMPUTE {
     """
     module load mpich
 
-    mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py
+    mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py "${inputs.degree}" "${inputs.method}" "${inputs.stress}"
     """
 }

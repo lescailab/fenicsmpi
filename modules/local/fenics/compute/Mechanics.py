@@ -9,7 +9,7 @@ from lib.Markers import MarkersSolid
 from lib.Parameters import PhysicalParametersSolid, OutputParameters
 from petsc4py import PETSc
 from sys import argv
-assert len(argv) == 3, "Must give two arguments: FEM degree and method (Newton|BFGS)"
+assert len(argv) == 4, "Must give three arguments: FEM degree, method (Newton|BFGS) and stress value"
 
 degree = int(argv[1])
 method = argv[2]

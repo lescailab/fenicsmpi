@@ -36,7 +36,7 @@ def readInputFile(csvFile) {
             if (row.STRESS) {
                 inputs.stress = row.STRESS
             }
-            inputs.methods = row.METHOD
+            inputs.method = row.METHOD
             array = [ meta, inputs ]
             return array
         }
