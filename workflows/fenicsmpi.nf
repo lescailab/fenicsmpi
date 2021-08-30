@@ -1,5 +1,5 @@
 // Check mandatory parameters
-if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input samplesheet not specified!' }
+if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input CSV file not specified!' }
 
 /*
 ========================================================================================
@@ -15,6 +15,7 @@ if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input sample
 
 // Don't overwrite global params.modules, create a copy instead and use that within the main script.
 def modules = params.modules.clone()
+include { READ_INPUT } FROM '../subworkflows/local/read_input.nf' addParams( options: [:] )
 
 /*
 ========================================================================================
@@ -39,7 +40,7 @@ workflow FENICSMPI {
     //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
     //
-    INPUT_CHECK (
+    READ_INPUT (
         ch_input
     )
 
@@ -47,7 +48,7 @@ workflow FENICSMPI {
     // MODULE: Run COMPUTE
     //
     FENICS_COMPUTE (
-
+        READ_INPUT.out.inputSample
     )
 
 
@@ -62,15 +63,6 @@ workflow FENICSMPI {
 
 }
 
-/*
-========================================================================================
-    COMPLETION EMAIL AND SUMMARY
-========================================================================================
-*/
-
-workflow.onComplete {
-    NfcoreTemplate.summary(workflow, params, log)
-}
 
 /*
 ========================================================================================
