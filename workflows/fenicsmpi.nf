@@ -40,25 +40,16 @@ def modules = params.modules.clone()
 //
 include { GET_SOFTWARE_VERSIONS } from '../modules/local/get_software_versions' addParams( options: [publish_files : ['tsv':'']] )
 
-//
-// SUBWORKFLOW: Consisting of a mix of local and nf-core/modules
-//
-include { INPUT_CHECK } from '../subworkflows/local/input_check' addParams( options: [:] )
-
 /*
 ========================================================================================
-    IMPORT NF-CORE MODULES/SUBWORKFLOWS
+    IMPORT LOCAL MODULES
 ========================================================================================
 */
 
-def multiqc_options   = modules['multiqc']
-multiqc_options.args += params.multiqc_title ? Utils.joinModuleArgs(["--title \"$params.multiqc_title\""]) : ''
-
+// MODULE: Import local modules
 //
-// MODULE: Installed directly from nf-core/modules
-//
-include { FASTQC  } from '../modules/nf-core/modules/fastqc/main'  addParams( options: modules['fastqc'] )
-include { MULTIQC } from '../modules/nf-core/modules/multiqc/main' addParams( options: multiqc_options   )
+include { FENICS_COMPUTE  } from '../modules/local/fenics/compute.nf'  addParams( options: modules['fenics_compute'] )
+include { FENICS_REPORT } from '../modules/local/fenics/report.nf' addParams( options: modules['fenics_report']   )
 
 /*
 ========================================================================================
@@ -103,24 +94,6 @@ workflow FENICSMPI {
         ch_software_versions.map { it }.collect()
     )
 
-    //
-    // MODULE: MultiQC
-    //
-    workflow_summary    = WorkflowFenicsmpi.paramsSummaryMultiqc(workflow, summary_params)
-    ch_workflow_summary = Channel.value(workflow_summary)
-
-    ch_multiqc_files = Channel.empty()
-    ch_multiqc_files = ch_multiqc_files.mix(Channel.from(ch_multiqc_config))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_multiqc_custom_config.collect().ifEmpty([]))
-    ch_multiqc_files = ch_multiqc_files.mix(ch_workflow_summary.collectFile(name: 'workflow_summary_mqc.yaml'))
-    ch_multiqc_files = ch_multiqc_files.mix(GET_SOFTWARE_VERSIONS.out.yaml.collect())
-    ch_multiqc_files = ch_multiqc_files.mix(FASTQC.out.zip.collect{it[1]}.ifEmpty([]))
-
-    MULTIQC (
-        ch_multiqc_files.collect()
-    )
-    multiqc_report       = MULTIQC.out.report.toList()
-    ch_software_versions = ch_software_versions.mix(MULTIQC.out.version.ifEmpty(null))
 }
 
 /*
@@ -130,7 +103,6 @@ workflow FENICSMPI {
 */
 
 workflow.onComplete {
-    NfcoreTemplate.email(workflow, params, summary_params, projectDir, log, multiqc_report)
     NfcoreTemplate.summary(workflow, params, log)
 }
 
