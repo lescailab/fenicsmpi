@@ -25,8 +25,8 @@ include { READ_INPUT } from '../subworkflows/local/read_input.nf' addParams( opt
 
 // MODULE: Import local modules
 //
-include { FENICS_COMPUTE  } from '../modules/local/fenics/compute'  addParams( options: modules['fenics_compute'] )
-include { FENICS_REPORT } from '../modules/local/fenics/report' addParams( options: modules['fenics_report']   )
+include { FENICS_COMPUTE  } from '../modules/local/fenics/compute/main'  addParams( options: modules['fenics_compute'] )
+include { FENICS_REPORT } from '../modules/local/fenics/report/main' addParams( options: modules['fenics_report']   )
 
 /*
 ========================================================================================
