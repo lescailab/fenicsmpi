@@ -18,6 +18,8 @@ process FENICS_COMPUTE {
         container "quay.io/fenicsproject/stable:latest"
     }
 
+    module 'mpich'
+
     input:
     tuple val(meta), val(inputs)
 
@@ -33,8 +35,6 @@ process FENICS_COMPUTE {
     // and where the same module is present --> NOT portable
 
     """
-    module load mpich
-
     mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py "${inputs.degree}" "${inputs.method}" "${inputs.stress}" &> ${prefix}.out
     """
 }
