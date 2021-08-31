@@ -29,6 +29,7 @@ def readInputFile(csvFile) {
             def inputs = [:]
             def array = []
             meta.id = row.ID
+            meta.run = "none"
             inputs.degree = row.DEGREE
             if (row.N) {
                 inputs.n = row.N
