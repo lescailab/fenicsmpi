@@ -24,6 +24,7 @@ process FENICS_COMPUTE {
     output:
     tuple val(meta), path("/images/*/*.h5"), emit: image
     tuple val(meta), path("/images/*/*.xdmf"), emit: xml
+    tuple val(meta), path("${prefix}.out"), emit: stdout
 
     script:
     def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
@@ -34,6 +35,6 @@ process FENICS_COMPUTE {
     """
     module load mpich
 
-    mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py "${inputs.degree}" "${inputs.method}" "${inputs.stress}"
+    mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py "${inputs.degree}" "${inputs.method}" "${inputs.stress}" &> ${prefix}.out
     """
 }

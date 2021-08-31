@@ -56,7 +56,7 @@ workflow FENICSMPI {
     // MODULE: Run REPORT
     //
     //FENICS_REPORT (
-
+    //    FENICS_COMPUTE.out.xml
     //)
 
 
