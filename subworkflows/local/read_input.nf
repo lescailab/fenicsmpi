@@ -22,7 +22,7 @@ workflow READ_INPUT {
 
 // Function to get list of [ meta, [ fastq_1, fastq_2 ] ]
 def readInputFile(csvFile) {
-    Channel.from(tsvFile)
+    Channel.from(csvFile)
         .splitCsv(header:true, sep: ',')
         .map { row ->
             def meta = [:]
