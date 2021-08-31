@@ -22,8 +22,8 @@ process FENICS_COMPUTE {
     tuple val(meta), val(inputs)
 
     output:
-    tuple val(meta), path("/images/*/*.h5"), emit: image
-    tuple val(meta), path("/images/*/*.xdmf"), emit: xml
+    tuple val(meta), path("./images/*/*.h5"), emit: image
+    tuple val(meta), path("./images/*/*.xdmf"), emit: xml
     tuple val(meta), path("${prefix}.out"), emit: stdout
 
     script:
