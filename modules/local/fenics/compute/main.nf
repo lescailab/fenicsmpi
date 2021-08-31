@@ -13,7 +13,7 @@ process FENICS_COMPUTE {
 
     conda (params.enable_conda ? "conda-forge::fenics" : null)
     if (workflow.containerEngine == 'singularity' && !params.singularity_pull_docker_container) {
-        container "library://nibscles/default/unipv:sha256.8ed337c4b43ff3e1546d05d5f08a6ee20c86670a38fde017ea2eaae5517fd"
+        container "library://nibscles/default/unipv:fenicsproject"
     } else {
         container "quay.io/fenicsproject/stable:latest"
     }
