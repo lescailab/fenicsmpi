@@ -6,48 +6,6 @@ Created on Fri Feb 22 14:06:24 2019
 @author: barnafi
 """
 
-
-def generateSquare(Nelements, length):
-    """
-    Creates a square mesh of given elements and length with markers on
-    the sides: left, bottom, right and top
-    """
-    from dolfin import UnitSquareMesh, SubDomain, MeshFunction, Measure, near
-    mesh = UnitSquareMesh(Nelements, Nelements)
-    # Rescale for Chapelle-Moireau comparison
-    mesh.coordinates()[:] *= length
-
-    # Subdomains: Solid
-    class Left(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[0], 0.0) and on_boundary
-
-    class Right(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[0], length) and on_boundary
-
-    class Top(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[1], length) and on_boundary
-
-    class Bottom(SubDomain):
-        def inside(self, x, on_boundary):
-            return near(x[1], 0.0) and on_boundary
-    left, right, top, bottom = Left(), Right(), Top(), Bottom()
-    LEFT, RIGHT, TOP, BOTTOM = 1, 2, 3, 4  # Set numbering
-    NONE = 99  # Marker for empty boundary
-
-    markers = MeshFunction("size_t", mesh, 1)
-    markers.set_all(0)
-
-    boundaries = (left, right, top, bottom)
-    def_names = (LEFT, RIGHT, TOP, BOTTOM)
-    for side, num in zip(boundaries, def_names):
-        side.mark(markers, num)
-
-    return mesh, markers, LEFT, RIGHT, TOP, BOTTOM, NONE
-
-
 def generate_boundary_measure(mesh, markers, tags_list, none_tag=42):
     from dolfin import Measure
 
@@ -78,6 +36,3 @@ def prolateGeometry(filename="prolate_4mm"):
     MeshTransformation.scale(mesh, 1e-3)
     return mesh, markers, ENDOCARD, EPICARD, BASE, NONE
 
-
-def setMeshAndMarkers3D(Nelements, length):
-    pass
