@@ -45,7 +45,6 @@ class MechanicsSolver:
         
         # self.dSRob = sum([self.ds(i) for i in Markers.robinMarkers], dsEmpty)
         self.dSRob = self.ds(10) + self.ds(50)
-        print(2)
 
     def setBC(self, *args):
         self.bcs = args  # tuple by construction
