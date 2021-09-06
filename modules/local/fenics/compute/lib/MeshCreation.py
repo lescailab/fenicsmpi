@@ -59,8 +59,8 @@ def generate_boundary_measure(mesh, markers, tags_list, none_tag=42):
 def prolateGeometry(filename="prolate_4mm"):
 
     from dolfin import XDMFFile, Mesh, MeshValueCollection, MeshTransformation
-    xdmf_meshfile = "mesh/" + filename + ".xdmf"
-    xdmf_meshfile_bm = "mesh/" + filename + "_bm.xdmf"
+    xdmf_meshfile = filename + ".xdmf"
+    xdmf_meshfile_bm = filename + "_bm.xdmf"
     mesh = Mesh()
     with XDMFFile(xdmf_meshfile) as infile:
         infile.read(mesh)
