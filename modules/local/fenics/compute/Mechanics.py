@@ -9,16 +9,17 @@ from lib.Markers import MarkersSolid
 from lib.Parameters import PhysicalParametersSolid, OutputParameters
 from petsc4py import PETSc
 from sys import argv
-assert len(argv) == 4, "Must give three arguments: FEM degree, method (Newton|BFGS) and stress value"
+assert len(argv) == 6, "Must give five arguments: FEM degree, method (Newton|BFGS), active stress value, mesh file name (no extension), output file name"
 
 degree = int(argv[1])
 method = argv[2]
 stress = float(argv[3])  # 5e3
+
 parameters["form_compiler"]["optimize"] = True
 parameters["form_compiler"]["cpp_optimize"] = True
 
-name = "heartbeat"
-geom = "prolate_h4_v2_ASCII"
+name = argv[5] # "heartbeat"
+geom = argv[4] # prolate_h4_v2_ASCII or prolate_4mm
 export = True
 LBFGS_order = 50
 
@@ -28,7 +29,7 @@ robinMarkers = [ENDOCARD, BASE, EPICARD]
 
 # Problem setting
 Markers = MarkersSolid(markers, neumannMarkers, robinMarkers)
-PhysicalParams = PhysicalParametersSolid(dt=1e-2, t0=0.0, sim_time=0.2, ys_degree=degree, AS=stress)
+PhysicalParams = PhysicalParametersSolid(dt=1e-2, t0=0.0, sim_time=0.8, ys_degree=degree, AS=stress)
 OutputParams = OutputParameters(name="result", verbose=True, export_solutions=export)
 ts = Constant((0, 0, 0))
 
