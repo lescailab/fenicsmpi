@@ -31,7 +31,7 @@ class MechanicsSolver:
             self.ufList = [self.uf_n.copy(True)]
             self.pList = [self.p_n.copy(True)]
         if OutputParameters.exportSolutions:
-            self.xdmf = XDMFFile("images/{}/{}.xdmf".format(self.name, OutputParameters.name))
+            self.xdmf = XDMFFile("{}/result.xdmf".format(self.name))
             self.exportSolution(0)
 
         # Setup measures

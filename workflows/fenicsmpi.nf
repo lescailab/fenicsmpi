@@ -1,5 +1,9 @@
 // Check mandatory parameters
-if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input CSV file not specified!' }
+if (params.input) { ch_input = file(params.input) } else { exit 1, 'Input CSV file not specified!' }  // This could be eventually done here with combine... perhaps
+
+if (params.mesh) { ch_mesh = file(params.mesh) } else { exit 1, 'Mesh file not specified! [full path required' }
+
+if (params.outdir) { ch_outdir = file(params.outdir) } else { exit 1, 'Output directory not specified!' }
 
 /*
 ========================================================================================
@@ -43,6 +47,7 @@ workflow FENICSMPI {
     READ_INPUT (
         ch_input
     )
+    //READ_INPUT.out.inputSample.subscribe onNext: { println it.degree }, onComplete: { println 'Done' }
 
     //
     // MODULE: Run COMPUTE
@@ -51,6 +56,7 @@ workflow FENICSMPI {
         READ_INPUT.out.inputSample
     )
 
+    
 
       //
     // MODULE: Run REPORT

@@ -66,3 +66,9 @@ def saveFiles(Map args) {
         }
     }
 }
+
+def grep(filename, string) {
+	local_file = file(filename)
+	out = local_file.text
+	// Not sure how to continue
+}
