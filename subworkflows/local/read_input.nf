@@ -14,7 +14,7 @@ workflow READ_INPUT {
     inputSample = readInputFile(inputCsv)
 
     emit:
-    inputSample // channel: [ val(meta), val(inputs) ]... not for now, using only a map with DEGREE, STRESS, METHOD, CORES.
+    instances = inputSample // input now has a name as well, instead of keeping a separate meta. // channel: [ val(meta), val(inputs) ]
 
 }
 
@@ -27,11 +27,8 @@ def readInputFile(csvFile) {
     Channel.from(csvFile)
         .splitCsv(header:true, sep: ',')
         .map { row ->
-            def meta = [:]
             def inputs = [:]
-            def array = []
-            meta.id = row.METHOD[0] + "-" + row.DEGREE + "-" + row.CORES + "-" + row.STRESS
-            meta.run = "none"
+            inputs.name = row.METHOD[0] + "-" + row.DEGREE + "-" + row.CORES + "-" + row.STRESS
             inputs.degree = row.DEGREE
             if (row.N) {
                 inputs.n = row.N
@@ -41,7 +38,6 @@ def readInputFile(csvFile) {
             }
             inputs.method = row.METHOD
 	    inputs.cores  = row.CORES
-            array = [ meta, inputs ]
-            return array
+            return inputs
         }
 }

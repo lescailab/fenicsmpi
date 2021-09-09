@@ -5,7 +5,7 @@ params.options = [:]
 options        = initOptions(params.options)
 
 process FENICS_COMPUTE {
-    tag "$meta.id"
+    tag "${inputs.name}"
     label 'process_high'
     publishDir "${params.outdir}",
         mode: params.publish_dir_mode,
@@ -21,55 +21,39 @@ process FENICS_COMPUTE {
     //module 'mpich'
 
     input:
-    tuple val(meta), val(inputs)
+    val(inputs)
 
     output:
     //tuple val(meta), path("./images/*/*.h5"), emit: image  // Not used
-    tuple val(meta), path("${params.outdir}/*.xdmf"), emit: xdmf
-    tuple val(meta), val(inputs), path("${meta.id}.out"), emit: stdout
+    path("${params.outdir}/*.xdmf"), emit: xdmf
+    path("*.out"), emit: results
 
     script:
     //def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
-    def prefix   = "${meta.id}"  // Simplify for now to be consistent with output
-
+    def prefix   = "${inputs.name}"  // Simplify for now to be consistent with output
     // module load will only work in environments with modules installed
     // and where the same module is present --> NOT portable
+    // When using ' instead of ", $ is handled by bash and ! by NF.
 
     """
-    mpirun -np $task.cpus python3 ${moduleDir}/Mechanics.py "${inputs.degree}" "${inputs.method}" "${inputs.stress}" "${params.mesh}" "${params.outdir}" &> ${prefix}.out
+    #!/bin/bash
+
+    sh ${moduleDir}/simulate_and_clean.sh ${inputs.cores} ${moduleDir} ${inputs.degree} ${inputs.method} ${inputs.stress} ${params.mesh} ${params.outdir} ${prefix}.out
     """
+    
+//    """
+//    OUTFILE=${prefix}.out
+//    mpirun -np ${inputs.cores} python3 ${moduleDir}/Mechanics.py "${inputs.degree}" "${inputs.method}" "${inputs.stress}" "${params.mesh}" "${params.outdir}" > TEMP
+//
+//    //DOFS=\$(grep 'Dofs' TEMP | sed -E 's/.*Dofs = ([0-9]+).*/\1/g')
+//    //grep 'nonlinear' TEMP | sed -E 's/.*in ([0-9]+) nonlinear.*/\1/g' > NL_ITS
+//    //grep 'nonlinear' TEMP | sed -E 's/.* ([0-9]+\.[0-9]+)s.*/\1/g' > TIMES
+//    //NL_IT=\$(python3 ${moduleDir}/column_average.py NL_ITS)
+//    //TIME=\$(python3 ${moduleDir}/column_average.py TIMES)
+//    //echo \$DOFS,\$NL_IT,\$TIME > \$OUTFILE
+//    //rm TEMP DOFS NL_ITS TIMES
+//    """
+
+
 }
 
-process FENICS_PROCESS_OUTPUT {
-    tag "$meta.id"
-    label 'process_high'
-    publishDir "${params.outdir}",
-        mode: params.publish_dir_mode,
-        saveAs: { filename -> saveFiles(filename:filename, options:params.options, publish_dir:getSoftwareName(task.process), meta:meta, publish_by_meta:['id']) }
-
-    input:
-    tuple val(meta), val(inputs), val(stdout)
-
-    output:
-    tuple val(meta), val(stdout-filtered-map), emit: stdout-filtered-map
-
-    script:
-
-    // First read stdout file and grep relevant lines 
-    DOFS = ...
-    // PASS
-
-    // For all lines, count then sum to compute average
-    SIZE = ...
-    NL_ITS = ...
-    TIME = ...
-
-
-    stdout-filtered-map = [:]
-    stdout-filtered-map.dofs = ...
-    stdout-filtered-map.method = ...
-    stdout-filtered-map.degree = ...
-    stdout-filtered-map.cores = ...
-    stdout-filtered-map.nonlinear_its = ...
-    stdout-filtered-map.time = ...
-}

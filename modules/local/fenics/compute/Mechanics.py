@@ -29,7 +29,7 @@ robinMarkers = [ENDOCARD, BASE, EPICARD]
 
 # Problem setting
 Markers = MarkersSolid(markers, neumannMarkers, robinMarkers)
-PhysicalParams = PhysicalParametersSolid(dt=1e-2, t0=0.0, sim_time=0.2, ys_degree=degree, AS=stress)
+PhysicalParams = PhysicalParametersSolid(dt=1e-2, t0=0.0, sim_time=0.02, ys_degree=degree, AS=stress)
 OutputParams = OutputParameters(name=name, verbose=True, export_solutions=export)
 ts = Constant((0, 0, 0))
 

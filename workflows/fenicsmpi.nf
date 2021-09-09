@@ -53,10 +53,13 @@ workflow FENICSMPI {
     // MODULE: Run COMPUTE
     //
     FENICS_COMPUTE (
-        READ_INPUT.out.inputSample
+        READ_INPUT.out.instances
     )
 
-    
+    current_state = READ_INPUT.out.instances
+    compute_out = FENICS_COMPUTE.out.results
+    //current_state.join(compute_out)
+
 
       //
     // MODULE: Run REPORT
