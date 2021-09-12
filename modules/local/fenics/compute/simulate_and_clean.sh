@@ -27,5 +27,5 @@ grep 'nonlinear' TEMP | sed -E 's/.* ([0-9]+\.[0-9]+)s.*/\1/g' > TIMES
 DOFS=$(grep 'Dofs' TEMP | sed -E 's/.*Dofs = ([0-9]+).*/\1/g')
 NL_IT=$(python3 ${MODSDIR}/column_average.py NL_ITS)
 TIME=$(python3 ${MODSDIR}/column_average.py TIMES)
-echo $DOFS,$NL_IT,$TIME > $OUTFILE
+echo $DOFS,$CORES,$DEGREE,$METHOD,$NL_IT,$TIME,$STRESS > $OUTFILE
 rm TEMP NL_ITS TIMES

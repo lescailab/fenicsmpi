@@ -64,9 +64,11 @@ workflow FENICSMPI {
       //
     // MODULE: Run REPORT
     //
-    //FENICS_REPORT (
-    //    FENICS_COMPUTE.out.xml
-    //)
+    FENICS_REPORT (
+        READ_INPUT.out.instances.collect(),
+	FENICS_COMPUTE.out.results.collect(),
+	//FENICS_COMPUTE.out.xdmf.collect()
+    )
 
 
 
