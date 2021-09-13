@@ -66,6 +66,6 @@ process FENICS_REPORT {
     // println(scalab_items)
 
     """
-    python ${moduleDir}/filter_csv.py "${results}"
+    python ${moduleDir}/filter_csv.py "${results}"  "${projectDir}/results"
     """
 }
