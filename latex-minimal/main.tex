@@ -1,0 +1,27 @@
+\documentclass{article}
+\usepackage{pgfplots}
+
+\begin{document}
+\begin{figure}
+    \begin{tikzpicture}
+    \begin{axis}
+        [ybar,
+        xtick=data,
+        width=6cm,
+        height=6cm,
+        ymin=0,
+        % ymax=4.5,
+        % ytick=data,
+        ylabel=Time (s),
+        bar width=5pt,
+        enlarge x limits={abs=20pt},  % This keeps columns centered
+         legend style={at={(0.03,0.97)},anchor=north west, fill opacity=0.6, font=\large,legend cell align=left}
+        ]
+	    \addplot [line width=2pt,mark=square] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_B_1.csv};
+	    \addplot [line width=2pt,mark=square] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_N_1.csv};
+	    \addplot [line width=2pt,mark=square] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_B_2.csv};
+	    \addplot [line width=2pt,mark=square] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_N_2.csv};
+    \end{axis}
+    \end{tikzpicture}
+\end{figure}
+\end{document}
