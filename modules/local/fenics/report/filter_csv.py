@@ -2,8 +2,6 @@ from sys import argv
 
 indirs = argv[1].split(" ")
 OUTDIR = argv[2]
-OUT_ROBUST="robustness.csv"
-OUT_SCALAB="scalability.csv"
 
 def dict_to_csv(_dict, prefix, header):
     for method in _dict:
@@ -35,7 +33,7 @@ for method in ['Newton', 'BFGS']:
         out_robust[method][degree].sort(key=lambda l: float(l[0]))
 
 print(out_robust)
-dict_to_csv(out_robust, "ROBUST", "nl_its,stress")
+dict_to_csv(out_robust, "ROBUST", "stress,nl_its")
 
 # For all methods, for all degrees append time vs cores
 out_scalab = { 'Newton': {'1': [], '2':[]}, 'BFGS': {'1': [], '2':[]}}
