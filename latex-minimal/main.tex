@@ -3,6 +3,7 @@
 
 \begin{document}
 \begin{figure}
+	
     \begin{tikzpicture}
     \begin{axis}
         [xtick=data,
@@ -16,13 +17,11 @@
 	xmode=log,
         bar width=5pt,
         enlarge x limits={abs=20pt},  % This keeps columns centered
-         legend style={at={(0.03,0.97)},anchor=north west, fill opacity=0.6, font=\large,legend cell align=left}
+         legend style={at={(0.03,0.50)},anchor=west, fill opacity=0.6, font=\large,legend cell align=left}
         ]
 	    \addplot [line width=2pt,color=red] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_B_1.csv};
 	    \addplot [line width=2pt,color=blue] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_N_1.csv};
-	    \addplot [line width=2pt,color=green] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_B_2.csv};
-	    \addplot [line width=2pt,color=gray] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_N_2.csv};
-	    \legend{BFGS-$P_1$, Newton-$P_1$, BFGS-$P_2$, Newton-$P_2$}
+	    \legend{BFGS-$P_1$, Newton-$P_1$}
     \end{axis}
     \end{tikzpicture}
 \end{figure}

@@ -25,7 +25,7 @@ for indir in indirs:
 # For all methods, for all degrees append nl_its vs stress
 out_robust = { 'Newton': {'1': [], '2':[]}, 'BFGS': {'1': [], '2':[]}}
 for out in outs:
-    if out['cores'] == '16':
+    if out['cores'] == '1':
         out_robust[out['method']][out['degree']].append((out['stress'], out['nl_its']))
 
 for method in ['Newton', 'BFGS']:
@@ -39,7 +39,7 @@ dict_to_csv(out_robust, "ROBUST", "stress,nl_its")
 out_scalab = { 'Newton': {'1': [], '2':[]}, 'BFGS': {'1': [], '2':[]}}
 for out in outs:
     print(out)
-    if out['stress'] == '1e4':
+    if out['stress'] == '5e3':
         out_scalab[out['method']][out['degree']].append((out['cores'], out['time']))
 
 for method in ['Newton', 'BFGS']:
