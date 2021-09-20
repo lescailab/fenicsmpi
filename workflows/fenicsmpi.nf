@@ -7,12 +7,6 @@ if (params.outdir) { ch_outdir = file(params.outdir) } else { exit 1, 'Output di
 
 /*
 ========================================================================================
-    CONFIG FILES
-========================================================================================
-*/
-
-/*
-========================================================================================
     IMPORT LOCAL MODULES/SUBWORKFLOWS
 ========================================================================================
 */
@@ -41,36 +35,21 @@ include { FENICS_REPORT } from '../modules/local/fenics/report/main' addParams( 
 
 workflow FENICSMPI {
 
-    //
     // SUBWORKFLOW: Read in samplesheet, validate and stage input files
-    //
     READ_INPUT (
         ch_input
     )
-    //READ_INPUT.out.inputSample.subscribe onNext: { println it.degree }, onComplete: { println 'Done' }
 
-    //
     // MODULE: Run COMPUTE
-    //
     FENICS_COMPUTE (
         READ_INPUT.out.instances
     )
 
-    current_state = READ_INPUT.out.instances
-    compute_out = FENICS_COMPUTE.out.results
-    //current_state.join(compute_out)
-
-
-      //
     // MODULE: Run REPORT
-    //
     FENICS_REPORT (
         READ_INPUT.out.instances.collect(),
 	FENICS_COMPUTE.out.results.collect(),
-	//FENICS_COMPUTE.out.xdmf.collect()
     )
-
-
 
 }
 

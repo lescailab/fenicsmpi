@@ -29,11 +29,7 @@ process FENICS_COMPUTE {
     path("*.out"), emit: results
 
     script:
-    //def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def prefix   = "${inputs.name}"  // Simplify for now to be consistent with output
-    // module load will only work in environments with modules installed
-    // and where the same module is present --> NOT portable
-    // When using ' instead of ", $ is handled by bash and ! by NF.
 
     """
     #!/bin/bash

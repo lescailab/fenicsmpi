@@ -16,7 +16,7 @@
         ylabel=Nonlinear iterations,
 	xmode=log,
         bar width=5pt,
-        enlarge x limits={abs=20pt},  % This keeps columns centered
+        %enlarge x limits={abs=20pt},  % This keeps columns centered
          legend style={at={(0.03,0.50)},anchor=west, fill opacity=0.6, font=\large,legend cell align=left}
         ]
 	    \addplot [line width=2pt,color=red] table [x=stress, y=nl_its, col sep=comma] {../results/ROBUST_B_1.csv};

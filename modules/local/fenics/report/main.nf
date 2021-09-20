@@ -19,51 +19,17 @@ process FENICS_REPORT {
     }
 
     input:
-    //tuple val(meta), path(xml)
     val inputs
     path results
     //path xdmfs
 
     //output:
-    //path("*csv"), emit: report
-    //tuple val(meta), path("*.RData"), emit: analysis
 
     script:
-    //def prefix   = options.suffix ? "${meta.id}${options.suffix}" : "${meta.id}"
     def prefix = inputs.name
-    print(["INPUT", inputs])
-    print(["RESULT", results])
+    //print(["INPUT", inputs])
+    //print(["RESULT", results])
 
-    // We iterate over results. 
-    // For scalability: Keep TIME vs CORES for all methods, degrees for stress=1e4.
-    // For robustness: Keep NL_ITS vs CORES (stress=1e4)  and NL_ITS vs STRESS (cores=16), for all methods, degrees.
-
-    // Scalability
-    // scalab_items = [:]  // First get relevant items to sort them out
-    // for (i in 0..inputs.size()-1)
-    // {
-    //     if (inputs[i].stress == "1e4")
-    //     {
-    //         def tag = inputs[i].name[0] + inputs[i].degree
-    //         def filename = results[i]
-    //         def res = new File(filename)
-    //         time = res.text.split(',').last()
-    //         if (scalab_items.containsKey(tag))
-    //         {
-    //     	scalab_items[tag].add([inputs[i].cores,time])
-    //         }
-    //         else
-    //         {
-    //             scalab_items[tag] = []
-    //     	scalab_items[tag].add([inputs[i].cores,time])
-    //         }
-    //     }
-    // }
-    // println(scalab_items)
-    //         //def outfile = new File('scalab_' + inputs[i].method[0] + '-' + inputs[i].degree '.csv')
-    //         //outfile.write("cores,time\n")
-    //         //scalab_items.add([inputs[i].name,inputs[i].cores,results[i]])
-    // println(scalab_items)
 
     """
     python ${moduleDir}/filter_csv.py "${results}"  "${projectDir}/results"

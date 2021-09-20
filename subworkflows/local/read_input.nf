@@ -27,7 +27,7 @@ def readInputFile(csvFile) {
     Channel.from(csvFile)
         .splitCsv(header:true, sep: ',')
         .map { row ->
-            def inputs = [:]
+            def inputs = [:]  // Groovy Map 
             inputs.name = row.METHOD[0] + "-" + row.DEGREE + "-" + row.CORES + "-" + row.STRESS
             inputs.degree = row.DEGREE
             if (row.N) {
